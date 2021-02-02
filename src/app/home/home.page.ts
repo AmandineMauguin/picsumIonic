@@ -23,25 +23,51 @@ export class HomePage {
       t.dismiss();
     });
   }
-  async presentToast() {
+  async presentToast(message: string) {
     const toast = await this.toastController.create({
-      message: "T'as perdu la co bro :'(",
+      message: message,
       duration: 2000,
     });
     toast.present();
   }
+
+  // async presentToast() {
+  //   const toast = await this.toastController.create({
+  //     header: 'Toast header',
+  //     message: 'Click to Close',
+  //     position: 'top',
+  //     buttons: [
+  //       {
+  //         side: 'start',
+  //         icon: 'star',
+  //         text: 'Favorite',
+  //         handler: () => {
+  //           console.log('Favorite clicked');
+  //         }
+  //       }, {
+  //         text: 'Done',
+  //         role: 'cancel',
+  //         handler: () => {
+  //           console.log('Cancel clicked');
+  //         }
+  //       }
+  //     ]
+  //   });
+  //   toast.present();
+  // }
+
   ionViewWillEnter() {
     this.getData();
-    let handler = Network.addListener("networkStatusChange", (status) => {
-      if (!status.connected) {
-        // alert("Attention ! T'as pas de co bro :/");
-        this.presentToast();
-      }
+    let handler = Network.addListener('networkStatusChange', (status) => {
+      
+      const message = !status.connected ? "Warning! You are offline" : "You are online";
+      this.presentToast(message);
       console.log("Network status changed", status);
     });
   }
 
-  getData(event = undefined) {
+  async getData(event = undefined) {
+    let status = await Network.getStatus();
     const URL = "https://picsum.photos/v2/list?limit=" + this.limit;
     this.http.get(URL).subscribe((data) => {
       this.apiData = data;
