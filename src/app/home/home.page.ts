@@ -66,6 +66,25 @@ export class HomePage {
     });
   }
 
+  // async presentToast(message: string) {
+  //   const toast = await this.toastController.create({
+  //     message: message,
+  //     // duration: 2000
+  //     buttons: [
+  //       {
+
+  //         text: 'Done',
+  //         role: 'cancel',
+  //         handler: () => {
+  //           console.log('Cancel clicked');
+  //         }
+  //       }
+  //     ]
+
+  //   });
+  //   toast.present();
+  // }
+
   async getData(event = undefined) {
     let status = await Network.getStatus();
     const URL = "https://picsum.photos/v2/list?limit=" + this.limit;
